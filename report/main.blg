@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+The style file: plain.bst
+Reallocating 'name_of_file' (item size: 1) to 5 items.
+Database file #1: refs.bib
+Warning--I didn't find a database entry for "example_reference"
+Warning--I didn't find a database entry for "zhang2021graph"
+Warning--empty journal in fisher1925statistical
+You've used 59 entries,
+            2118 wiz_defined-function locations,
+            747 strings with 12667 characters,
+and the built_in function-call counts, 19122 in all, are:
+= -- 1733
+> -- 1310
+< -- 5
++ -- 521
+- -- 456
+* -- 1290
+:= -- 3439
+add.period$ -- 178
+call.type$ -- 59
+change.case$ -- 403
+chr.to.int$ -- 0
+cite$ -- 60
+duplicate$ -- 685
+empty$ -- 1222
+format.name$ -- 456
+if$ -- 3796
+int.to.chr$ -- 0
+int.to.str$ -- 59
+missing$ -- 59
+newline$ -- 298
+num.names$ -- 118
+pop$ -- 439
+preamble$ -- 1
+purify$ -- 344
+quote$ -- 0
+skip$ -- 495
+stack$ -- 0
+substring$ -- 538
+swap$ -- 116
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 236
+warning$ -- 1
+while$ -- 139
+width$ -- 61
+write$ -- 600
+(There were 3 warnings)
