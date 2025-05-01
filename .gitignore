@@ -1,0 +1,44 @@
+# --------------------
+# Ignorer les fichiers générés dans report/
+# --------------------
+
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/*.lof
+report/*.lot
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
+
+report/*~
+report/*.bak
+report/*.swp
+report/*.swo
+
+report/*.pdf
+!report/main.pdf
+!report/scientific_poster.pdf
+
+!report/main.tex
+!report/refs.bib
+!report/presentation_slides.pptx
+
+# --------------------
+# Ignorer les données lourdes et les embeddings dans data/
+# --------------------
+
+# GloVe (embeddings lourds)
+glove/
+
+# Dossiers de features et CSV de datasets
+data/MELD_features/
+data/IEMOCAP_features/
+data/MELD_csv/
+
+# --------------------
+# Système
+# --------------------
+__pycache__/
+*.DS_Store
