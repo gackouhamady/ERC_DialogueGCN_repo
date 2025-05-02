@@ -42,3 +42,9 @@ data/MELD_csv/
 # --------------------
 __pycache__/
 *.DS_Store
+
+
+
+
+.vscode/
+data
