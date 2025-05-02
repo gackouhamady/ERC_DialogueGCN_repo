@@ -1,9 +1,9 @@
-import pandas as pd 
-import numpy as np 
+import pandas as pd  # type: ignore
+import numpy as np  # type: ignore
 import os
 import pickle
 from collections import defaultdict
-from tqdm import tqdm
+from tqdm import tqdm # type: ignore
 
 # === Configuration ===
 data_dir = "./data/MELD_csv"  # dossier contenant les fichiers csv

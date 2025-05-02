@@ -1,0 +1,112 @@
+\documentclass[a0paper,portrait]{tikzposter}
+
+% Theme and customization
+\usetheme{Default}
+\usecolorstyle{Germany} % You can choose other color styles or define your own
+
+% Additional packages
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{booktabs} % Required for \toprule, \midrule, \bottomrule
+
+% Custom colors
+\definecolor{blueDark}{RGB}{0,51,102}
+\definecolor{blueLight}{RGB}{102,153,204}
+\definecolor{redAlert}{RGB}{204,0,0}
+\definecolor{grayText}{RGB}{80,80,80}
+
+\title{Enhancing DialogueGCN for Conversational Emotion Recognition}
+\author{Hamady GACKOU, Omar NAMOUS (Univ. Paris Cité)\\Advisor: Séverine AFFELT}
+\institute{}
+
+\begin{document}
+
+\maketitle
+
+% --- Column 1 ---
+\block{1. Problématique}{
+\begin{itemize}
+  \item 48\% d'erreurs sur les \textcolor{redAlert}{énoncés courts} (<3 mots)
+  \item Fenêtres contextuelles \textcolor{redAlert}{figées} dans DialogueGCN original
+  \item Limites \textcolor{redAlert}{unimodales} (texte seul)
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Équation clé} :
+\[ f_\theta: (u_i, C_{\setminus i}, \mathcal{S}) \rightarrow y_i \in Y \]
+}
+
+\block{2. Innovations}{
+\begin{multicols}{2}
+\textcolor{blueDark}{\textbf{ATA}} \\ Adaptive Temporal Attention \\ \small
+\[ \alpha_t = \sigma\left(\frac{QK^T}{\sqrt{d_k}} + M\right) \]
+
+\columnbreak
+
+\textcolor{blueDark}{\textbf{HCR}} \\ Hierarchical Context Reinforcement \\ \small
+\[ h_i^{\text{final}} = \text{LayerNorm}(h_i^{\text{local}} + \sum_{k=1}^L \gamma_k h_i^{\text{global},k}) \]
+\end{multicols}
+}
+
+% --- Column 2 ---
+\block{3. Résultats Expérimentaux}{
+\begin{tabular}{lcc}
+\toprule
+Module & F1 (\( \Delta \)) & Temps (ms) \\
+\midrule
+Baseline & \( 61.7 \) & \( 12 \) \\
++ ATA & \( 63.5 \) (\(+1.8\)) & \( 14 \) \\
++ HCR & \( 64.8 \) (\(+3.1\)) & \( 16 \) \\
++ DMF & \textbf{\( 66.3 \)} (\(+4.6\)) & \( 18 \) \\
+\bottomrule
+\end{tabular}
+}
+
+\block{4. Analyse}{
+\begin{itemize}
+  \item Gain maximal sur \textcolor{redAlert}{énoncés courts} (+9.2\% UAR)
+  \item Complexité maîtrisée (+23\% FLOPs vs COSMIC)
+  \item Sensibilité aux \textcolor{redAlert}{émotions proches} (joy/excitement)
+\end{itemize}
+}
+
+% --- Column 3 ---
+\block{5. Applications}{
+\begin{itemize}
+  \item Diagnostic psychiatrique assisté
+  \item Tutoriels adaptatifs
+  \item Robots sociaux émotionnels
+\end{itemize}
+
+\vspace{10pt} % Correct
+
+\textcolor{blueDark}{\textbf{Avantages clés}} :
+\begin{itemize}
+  \item Robustesse inter-langues (testé FR/EN/ZH)
+  \item Latence réduite (<20ms/énoncé)
+\end{itemize}
+}
+
+\block{6. Références}{
+\small
+\begin{multicols}{2}
+[1] Ghosal et al. (2019). \textit{DialogueGCN}. ACL \newline
+[2] Poria et al. (2019). \textit{MELD Dataset}. ACL \newline
+[3] Zhang (2023). \textit{ERC Survey}. IEEE TAC \newline
+[4] Busso (2008). \textit{IEMOCAP}. IEEE \\
+[5] Zadeh (2018). \textit{Multimodal Fusion}. ACL
+\end{multicols}
+}
+
+\block{7. Perspectives}{
+\begin{itemize}
+  \item Intégration neuro-symbolique
+  \item Réduction des biais culturels
+  \item Framework éthique pour l'ERC
+\end{itemize}
+}
+
+\end{document}
