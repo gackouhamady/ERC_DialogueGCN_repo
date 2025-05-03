@@ -1,12 +1,19 @@
-import numpy as np
-import pandas as pd
-import pickle
-import os
 import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import numpy as np # type: ignore
+import pandas as pd # type: ignore
+import pickle
 from collections import defaultdict, Counter
-from tqdm import tqdm
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from sklearn.preprocessing import LabelEncoder
+from tqdm import tqdm # type: ignore
+from sklearn.preprocessing import LabelEncoder # type: ignore
+
+# Support TensorFlow ≥2.13
+try:
+    from tensorflow.keras.preprocessing.sequence import pad_sequences # type: ignore
+except ImportError:
+    from keras_preprocessing.sequence import pad_sequences # type: ignore
+
 
 class MELDDataPreprocessor:
     """
@@ -14,7 +21,7 @@ class MELDDataPreprocessor:
     """
     
     def __init__(self, data_dir="../data/MELD_csv", embedding_dim=300, max_sent_length=50):
-        self.data_dir = data_dir
+        self.data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), data_dir))
         self.embedding_dim = embedding_dim
         self.max_sent_length = max_sent_length
         self.emotion2idx = {
@@ -25,6 +32,7 @@ class MELDDataPreprocessor:
         
     def load_glove_embeddings(self, glove_path):
         """Charge les embeddings GloVe pré-entraînés"""
+        glove_path = os.path.abspath(os.path.join(os.path.dirname(__file__), glove_path))
         print(f"Loading GloVe embeddings from {glove_path}...")
         embeddings_index = {}
         with open(glove_path, encoding='utf8') as f:
@@ -50,39 +58,47 @@ class MELDDataPreprocessor:
         """Traite l'ensemble du dataset MELD"""
         print("Processing MELD dataset...")
         
-        train_df = pd.read_csv(os.path.join(self.data_dir, "train_sent_emo.csv"))
-        dev_df   = pd.read_csv(os.path.join(self.data_dir, "dev_sent_emo.csv"))
-        test_df  = pd.read_csv(os.path.join(self.data_dir, "test_sent_emo.csv"))
+        # Vérification de l'existence des fichiers
+        train_path = os.path.join(self.data_dir, "train_sent_emo.csv")
+        if not os.path.exists(train_path):
+            raise FileNotFoundError(f"Fichier train_sent_emo.csv introuvable dans {self.data_dir}")
         
+        train_df = pd.read_csv(train_path)
+        dev_df = pd.read_csv(os.path.join(self.data_dir, "dev_sent_emo.csv"))
+        test_df = pd.read_csv(os.path.join(self.data_dir, "test_sent_emo.csv"))
+        
+        # Traitement du texte
         all_text = pd.concat([train_df['Utterance'], dev_df['Utterance'], test_df['Utterance']])
         
         vocab = set()
         word_counts = Counter()
         for text in all_text:
-            tokens = text.strip().split()
+            tokens = str(text).strip().split()
             vocab.update(tokens)
             word_counts.update(tokens)
         
         self.vocab = vocab
         self.word_index = {w: i+1 for i, w in enumerate(vocab)}  # 0 pour le padding
         
+        # Traitement des splits
         train_data = self._process_split(train_df, "train")
-        val_data   = self._process_split(dev_df,   "val")
-        test_data  = self._process_split(test_df,  "test")
+        val_data = self._process_split(dev_df, "val")
+        test_data = self._process_split(test_df, "test")
         
+        # Calcul de la longueur maximale des dialogues
         self.max_utts = max(
             max(len(d) for d in train_data['dialogue_ids'].values()),
-            max(len(d) for d in val_data  ['dialogue_ids'].values()),
-            max(len(d) for d in test_data ['dialogue_ids'].values())
+            max(len(d) for d in val_data['dialogue_ids'].values()),
+            max(len(d) for d in test_data['dialogue_ids'].values())
         )
         
         return {
             'train': train_data,
-            'val':   val_data,
-            'test':  test_data,
-            'word_index':       self.word_index,
-            'vocab':            self.vocab,
-            'emotion_labels':   self.emotion2idx,
+            'val': val_data,
+            'test': test_data,
+            'word_index': self.word_index,
+            'vocab': self.vocab,
+            'emotion_labels': self.emotion2idx,
             'sentiment_labels': self.sentiment2idx
         }
     
@@ -91,12 +107,12 @@ class MELDDataPreprocessor:
         print(f"Processing {split_name} split...")
         
         data = {
-            'text':         [],
+            'text': [],
             'dialogue_ids': defaultdict(list),
-            'speakers':     defaultdict(list),
-            'emotions':     [],
-            'sentiments':   [],
-            'utterance_ids':[]
+            'speakers': defaultdict(list),
+            'emotions': [],
+            'sentiments': [],
+            'utterance_ids': []
         }
         
         for _, row in tqdm(df.iterrows(), total=len(df), desc=f"Processing {split_name}"):
@@ -126,10 +142,14 @@ class MELDDataPreprocessor:
         
         key = 'emotions' if mode == 'emotion' else 'sentiments'
         
+        # Chemin absolu pour les embeddings GloVe
+        glove_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../glove/glove.6B.300d.txt"))
+        
         return {
             'train': self._prepare_split(processed_data['train'], key),
-            'val':   self._prepare_split(processed_data['val'],   key),
-            'test':  self._prepare_split(processed_data['test'],  key)
+            'val': self._prepare_split(processed_data['val'], key),
+            'test': self._prepare_split(processed_data['test'], key),
+            'W': self.create_embedding_matrix(self.word_index, self.load_glove_embeddings(glove_path))
         }
     
     def _prepare_split(self, split_data, label_key):
@@ -148,7 +168,7 @@ class MELDDataPreprocessor:
             pad_feats = np.zeros((max_utts, self.max_sent_length))
             pad_feats[:n] = feats
             
-            num_classes = len(self.emotion2idx) if label_key=='emotions' else len(self.sentiment2idx)
+            num_classes = len(self.emotion2idx) if label_key == 'emotions' else len(self.sentiment2idx)
             onehot = np.zeros((max_utts, num_classes))
             onehot[np.arange(n), labs] = 1
             
@@ -163,23 +183,50 @@ class MELDDataPreprocessor:
         
         return {
             'dialogue_features': np.array(dialogues),
-            'dialogue_labels':   np.array(labels),
-            'dialogue_ids':      ids,
-            'dialogue_lengths':  lengths,
-            'mask':              mask
+            'dialogue_labels': np.array(labels),
+            'dialogue_ids': ids,
+            'dialogue_lengths': lengths,
+            'mask': mask
         }
     
     def save_processed_data(self, data, output_path):
         """Sauvegarde les données prétraitées"""
+        output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), output_path))
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         with open(output_path, 'wb') as f:
             pickle.dump(data, f)
         print(f"Processed data saved to {output_path}")
 
+
+def main():
+    # Chemins absolus pour les répertoires
+    pickles_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/MELD_features"))
+    meld_csv_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/MELD_csv"))
+    
+    # Création des répertoires nécessaires
+    os.makedirs(pickles_dir, exist_ok=True)
+    os.makedirs(meld_csv_dir, exist_ok=True)
+    
+    # Initialisation du prétraitement
+    preprocessor = MELDDataPreprocessor(data_dir=meld_csv_dir)
+    
+    try:
+        # Traitement du dataset
+        processed_data = preprocessor.process_dataset()
+        
+        # Préparation et sauvegarde des données pour Emotion
+        emotion_data = preprocessor.prepare_for_bc_lstm(processed_data, mode='emotion')
+        preprocessor.save_processed_data(emotion_data, os.path.join(pickles_dir, "MELD_emotion.pkl"))
+        
+        # Préparation et sauvegarde des données pour Sentiment
+        sentiment_data = preprocessor.prepare_for_bc_lstm(processed_data, mode='sentiment')
+        preprocessor.save_processed_data(sentiment_data, os.path.join(pickles_dir, "MELD_sentiment.pkl"))
+        
+        print("Prétraitement terminé avec succès!")
+    except Exception as e:
+        print(f"Erreur lors du prétraitement: {str(e)}")
+        sys.exit(1)
+
+
 if __name__ == "__main__":
-    # Assurez-vous d'avoir installé TensorFlow :
-    #   pip install tensorflow
-    pre = MELDDataPreprocessor(data_dir="./data/MELD_csv")
-    processed = pre.process_dataset()
-    bc_lstm = pre.prepare_for_bc_lstm(processed, mode='emotion')
-    pre.save_processed_data(bc_lstm, "../data/MELD_features/MELD_features.pkl")
+    main()
