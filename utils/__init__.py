@@ -4,6 +4,9 @@ from .dataloader import AVECDataset
 from .dataloader import MELDDataset
 from .dataloader import DailyDialogueDataset
 from .dataloader import DailyDialogueDataset2
+from .dataloader import DailyDialogueDataset3
+from .dataloader import DailyDialoguePadCollate
+
 
 # Importation des classes et modules de attention_modules.py
 from .attention_modules import MaskedNLLLoss
@@ -13,3 +16,8 @@ from .attention_modules import SimpleAttention
 from .attention_modules import MatchingAttention
 from .attention_modules import Attention
 from .attention_modules import MaskedEdgeAttention
+
+
+
+
+

@@ -1,1 +1,41 @@
-# List of dependencies
+# Core
+numpy==1.26.4
+pandas==2.2.3
+scipy==1.15.2
+networkx==3.4.2
+tqdm==4.66.5
+pyyaml==6.0.2
+
+# Deep Learning & GNN
+torch==2.6.0
+torch-geometric==2.6.1
+torchaudio==2.6.0
+torchvision==0.21.0
+
+# NLP & Transformers
+transformers==4.51.2
+datasets==3.5.1
+sentence-transformers==4.0.2
+huggingface-hub==0.30.2
+spacy==3.8.3
+en-core-web-sm==3.8.0
+
+# Speech & Audio
+librosa==0.11.0
+soundfile==0.13.1
+sounddevice==0.5.1
+
+# Computer Vision / Face
+opencv-python==4.11.0.86
+face-alignment==1.4.1
+facenet-pytorch==2.5.3
+
+# Utilities & Visualization
+scikit-learn==1.6.1
+scikit-image==0.25.2
+matplotlib==3.10.1
+jupyterlab==4.3.4
+
+
+
+# Pour  le spacy  ,  une installation manuel est necessaire : a  part : python -m spacy download en_core_web_sm

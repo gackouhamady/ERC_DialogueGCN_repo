@@ -129,8 +129,8 @@ if __name__ == '__main__':
 
     # ✅ sauvegarde
     print("Sauvegarde du fichier pickle...")
-    os.makedirs('dailydialog', exist_ok=True)
-    with open('dailydialog/daily_dialogue_bert2.pkl', 'wb') as f:
+    os.makedirs('daily_dialog_loader', exist_ok=True)
+    with open('daily_dialog_loader/daily_dialogue_bert2.pkl', 'wb') as f:
         pickle.dump([
             convSpeakers, convInputSequence, convActLabels, convEmotionLabels,
             train_ids, test_ids, valid_ids

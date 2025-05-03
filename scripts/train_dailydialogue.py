@@ -1,12 +1,19 @@
-import numpy as np, argparse, time, pickle, random
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-from torch.utils.data.sampler import SubsetRandomSampler
-from dataloader import IEMOCAPDataset, DailyDialogueDataset2
-from model import MaskedNLLLoss, LSTMModel, GRUModel, DialogRNNModel, DialogueGCNModel
-from sklearn.metrics import f1_score, confusion_matrix, accuracy_score, classification_report, precision_recall_fscore_support, precision_score, recall_score
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
+import numpy as np, argparse, time, pickle, random # type: ignore
+import torch # type: ignore
+import torch.nn as nn # type: ignore
+import torch.optim as optim # type: ignore
+from torch.utils.data import DataLoader # type: ignore
+from torch.utils.data.sampler import SubsetRandomSampler # type: ignore
+from utils import DailyDialogueDataset
+from utils import AVECDataset, MELDDataset, IEMOCAPDataset
+from utils import DailyDialogueDataset2
+from models import MaskedNLLLoss, LSTMModel, GRUModel, DialogRNNModel, DialogueGCNModel
+from sklearn.metrics import f1_score, confusion_matrix, accuracy_score, classification_report, precision_recall_fscore_support, precision_score, recall_score # type: ignore
 
 # We use seed = 100 for reproduction of the results reported in the paper.
 seed = 100
@@ -258,7 +265,7 @@ if __name__ == '__main__':
         print('Running on CPU')
 
     if args.tensorboard:
-        from tensorboardX import SummaryWriter
+        from tensorboardX import SummaryWriter # type: ignore
         writer = SummaryWriter()
 
     n_classes  = 7
