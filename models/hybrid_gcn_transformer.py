@@ -295,7 +295,7 @@ class DialogueRNNCell(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
         if context_attention=='simple':
-            from utils.attention_modules import SimpleAttention
+     
             self.attention = SimpleAttention(D_g)
         else:
             self.attention = MatchingAttention(D_g, D_m, D_a, context_attention)

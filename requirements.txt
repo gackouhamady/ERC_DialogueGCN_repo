@@ -7,18 +7,18 @@ tqdm==4.66.5
 pyyaml==6.0.2
 
 # Deep Learning & GNN
-torch==2.6.0
+torch==2.7.0
 torch-geometric==2.6.1
-torchaudio==2.6.0
-torchvision==0.21.0
+torchaudio==2.7.0
+torchvision==0.22.0
 
 # NLP & Transformers
 transformers==4.51.2
 datasets==3.5.1
-sentence-transformers==4.0.2
+sentence-transformers==4.1.0
 huggingface-hub==0.30.2
-spacy==3.8.3
-en-core-web-sm==3.8.0
+spacy==3.8.5
+
 
 # Speech & Audio
 librosa==0.11.0
@@ -37,5 +37,5 @@ matplotlib==3.10.1
 jupyterlab==4.3.4
 
 
+# Manuelly added : python -m spacy download en_core_web_sm  and python -m spacy download en_core_web_sm
 
-# Pour  le spacy  ,  une installation manuel est necessaire : a  part : python -m spacy download en_core_web_sm
