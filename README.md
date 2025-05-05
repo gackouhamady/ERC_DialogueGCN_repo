@@ -41,16 +41,6 @@ DialogueGCN (Ghosal et al., EMNLP-IJCNLP 2019) models dialogues as relational gr
 - TensorBoard, Pandas, scikit-learn
 
 ## 📂 Project Structure
-
-
-
-
-
-
-
-
-
-## 📁 Structure du projet
 ```bash
 ERC_DIALOGUEGCN_HAMADY/
 ├── .vscode/                      # Configurations VSCode
