@@ -94,7 +94,7 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 
 - Investigate transfer learning to social media or low-resource domains.
 
-## 📚 References Clés
+## 📚 Key References 
 - Ghosal et al., DialogueGCN: A Graph Convolutional Neural Network for Emotion Recognition in Conversation, EMNLP-IJCNLP 2019.
 
 - Majumder et al., DialogueRNN, AAAI 2019.
