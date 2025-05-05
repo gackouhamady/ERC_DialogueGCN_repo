@@ -1,101 +1,129 @@
-# DialogueGCN++: Amélioration pour la Reconnaissance des Émotions en Conversation
+# Re-evaluating DialogueGCN for Emotion Recognition in Conversation
+
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 
-## 📝 Description
+## 📘 Project Overview
 
-**DialogueGCN++** est une amélioration novatrice de l'architecture DialogueGCN pour la reconnaissance d'émotions en conversation, résolvant trois limitations fondamentales :
+This project conducts a **critical reproduction and evaluation** of the DialogueGCN model — a graph-based neural network designed for **Emotion Recognition in Conversations (ERC)**. Our work involves faithful reimplementation, empirical validation on benchmark datasets, and exploration of its practical and architectural limitations.
 
-1. **Attention Temporelle Adaptative (ATA)** : Ajuste dynamiquement la fenêtre contextuelle
-2. **Renforcement Contextuel Hiérarchique (HCR)** : Capture mieux les émotions dans les énoncés courts
-3. **Fusion Multimodale Différentielle (DMF)** : Intègre optimalement texte, audio et vidéo
+## 🎯 Objectives
 
-## 🚀 Fonctionnalités clés
+- Reproduce the original DialogueGCN architecture and training setup.
+- Evaluate its performance on **IEMOCAP**, **MELD**, and **DailyDialog** datasets.
+- Analyze the effects of key hyperparameters (dropout, learning rate, context window).
+- Test the model's **scalability** and **hardware sensitivity**, especially on **EmoryNLP** (CPU vs GPU).
+- Provide clear insights into **graph-based architectures** for conversational emotion analysis.
 
-- Architecture hybride GCN-Transformer
-- Mécanisme d'attention relationnelle amélioré
-- Support multimodal (texte, audio, visuel)
-- Optimisation pour les énoncés courts et longs
+## 🧠 Why DialogueGCN?
 
-## 📊 Résultats
+DialogueGCN (Ghosal et al., EMNLP-IJCNLP 2019) models dialogues as relational graphs to capture both **temporal** and **inter-speaker dependencies**, using Relational GCN layers. Its design allows for fine-grained modeling of interpersonal emotional dynamics, surpassing sequential baselines (LSTM, GRU, DialogueRNN) in accuracy and expressivity.
 
-| Modèle            | IEMOCAP (F1) | MELD (Acc) | DailyDialog (F1) |
-|-------------------|--------------|------------|------------------|
-| DialogueGCN       | 0.643        | 0.591      | 0.608            |
-| DialogueGCN++     | **0.689**    | **0.589**  | **0.613**        |
-
-Gain moyen de **6.2%** en F1-score par rapport aux modèles existants.
-
-## 🛠 Installation
-
-1. Cloner le dépôt :
-```bash
-git clone git@github.com:gackouhamady/ERC_DialogueGCN_Hamady.git
-cd ERC_DialogueGCN_Hamady
-```
-
-2. Installer les dépendances :
+## 🔬 Key Results
 
 ```bash
-pip install -r requirements.txt
-```
 
-## 🏁 Utilisation
+| Dataset      | F1-score (original) | F1-score (reproduced) | Notes                                           |
+|--------------|---------------------|------------------------|------------------------------------------------|
+| IEMOCAP      | 64.18%              | 63.9%                  | Stable with weighted loss + dropout            |
+| DailyDialog  | N/A                 | 82.28%                 | Excellent generalization, clean structure      |
+| MELD         | 58.10%              | 48.12%                 | Convergence issues, unbalanced label problem   |
+| EmoryNLP     | --                  | --                     | Failed training on CPU (memory bottleneck)     |
+```
+## ⚙️ Technologies
 
-- Entraînement
-```bash
-python train.py --dataset IEMOCAP --modalities text audio visual --batch_size 32
-```
-- Évaluation
-```bash
-python evaluate.py --model_path checkpoints/best_model.pt --test_data data/IEMOCAP/test.json
-```
+- Python 3.10
+- PyTorch 2.7.0
+- PyTorch Geometric 2.6.1
+- GloVe embeddings (300d)
+- TensorBoard, Pandas, scikit-learn
+
+## 📂 Project Structure
+
+
+
+
+
+
 
 
 
 ## 📁 Structure du projet
 ```bash
-DialogueGCNpp/
-├── data/               # Jeux de données prétraités
-├── models/             # Implémentation des modèles
-│   ├── attention.py    # Modules d'attention
-│   ├── gcn.py          # Couches GCN
-│   └── fusion.py       # Fusion multimodale
-├── configs/            # Configurations
-├── scripts/            # Scripts utilitaires
-├── train.py            # Script d'entraînement
-└── evaluate.py         # Script d'évaluation
+ERC_DIALOGUEGCN_HAMADY/
+├── .vscode/                      # Configurations VSCode
+├── data/                         # Datasets et fichiers prétraités
+├── glove/                        # Fichiers d'embedding GloVe
+├── models/                       # Implémentations de modèles (DialogueGCN, etc.)
+├── report/                       # Rapport scientifique (PDF, .tex, etc.)
+├── scripts/                      # Scripts d'entraînement par dataset
+│   ├── saved/                    # Checkpoints sauvegardés
+│   ├── train_evaluate_dailydialogue.py
+│   ├── train_evaluate_emory.py
+│   ├── train_evaluate_iemocap.py
+│   └── train_evaluate_meld.py
+├── utils/                        # Utilitaires Python
+│   ├── __pycache__/
+│   ├── daily_dialog_loader/     # Loader spécifique pour DailyDialog
+│   └── video_presentation/      # Éléments pour la vidéo de présentation
+├── .gitignore                    # Fichiers ignorés par Git
+├── discussion.ouverte.txt       # Notes ouvertes de discussion ou TODO
+├── LICENSE                       # Licence du projet
+├── preprocess_dailydialog.py    # Script de prétraitement pour DailyDialog
+├── preprocess_emorynlp.py       # Script de prétraitement pour EmoryNLP
+├── preprocess_meld.py           # Script de prétraitement pour MELD
+├── README.md                    # Présentation du projet
+├── requirements.txt             # Dépendances Python
+├── results_resume.txt           # Résumé synthétique des résultats
+└── results.txt                  # Résultats détaillés
+
 
 ```
-📚 Jeux de données supportés
-- IEMOCAP
 
-- MELD
+## 🧪 Reproducibility
 
-- DailyDialog
+All hyperparameters, Scripts, and model checkpoints are provided. To replicate the main results
 
-- EmoWOZ
+##🔍 Highlights
+- Graph-based architectures significantly outperform sequential models in structured ERC.
 
-- EmoFR (notre nouveau corpus)
+- Training fails on CPU for EmoryNLP due to O(N²) memory cost of relational GCN.
 
-## 📜 Citation
-Si vous utilisez ce travail, veuillez citer :
+- Small batch sizes and dot-product attention yield the best F1 scores.
 
-bibtex
-@article{dialoguegcnpp2023,
-  title={DialogueGCN++: Improved Emotion Recognition in Conversation with Adaptive Attention and Multimodal Fusion},
-  author={Gackou, Hamady and Namous, Omar},
-  journal={arXiv preprint arXiv:xxxx.xxxxx},
-  year={2025}
-}
-## 🤝 Contribution
-Les contributions sont les bienvenues ! Veuillez ouvrir une issue ou une pull request.
+- Class weighting crucial for imbalanced datasets like MELD.
 
-## 📧 Contact
-Pour toute question : hamady.gackou@etu.u-paris.fr
+📈 Future Directions
+- Integrate multimodal features (audio, video) for richer emotion cues.
 
-📄 Licence
-Ce projet est sous licence MIT -  [Voir la licence MIT](LICENSE)
+- Explore graph sparsification for efficient CPU training.
+
+- Apply explainability techniques (e.g., GNNExplainer).
+
+- Investigate transfer learning to social media or low-resource domains.
+
+## 📚 References Clés
+- Ghosal et al., DialogueGCN: A Graph Convolutional Neural Network for Emotion Recognition in Conversation, EMNLP-IJCNLP 2019.
+
+- Majumder et al., DialogueRNN, AAAI 2019.
+
+- Poria et al., MELD Dataset, ACL 2019.
+
+- Schlichtkrull et al., Relational GCN, ESWC 2018.
+
+#### Author: Hamady GACKOU
+#### Supervisor: Dr. Séverine AFFELT, Université Paris Cité
+## 📅 Project Year: 2025
+## 📄 See full report in /report/
+
+
+
+
+
+
+
+## 📄 Licence
+[See](LICENSE)
 
