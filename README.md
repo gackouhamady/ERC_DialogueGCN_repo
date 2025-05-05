@@ -76,7 +76,7 @@ ERC_DIALOGUEGCN_HAMADY/
 
 All hyperparameters, Scripts, and model checkpoints are provided. To replicate the main results
 
-##🔍 Highlights
+## 🔍 Highlights
 - Graph-based architectures significantly outperform sequential models in structured ERC.
 
 - Training fails on CPU for EmoryNLP due to O(N²) memory cost of relational GCN.
