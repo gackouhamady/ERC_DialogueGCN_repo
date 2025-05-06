@@ -1,0 +1,149 @@
+\begin{thebibliography}{10}
+
+\bibitem{busso2008iemocap}
+Carlos Busso, Murtaza Bulut, Chi-Chun Lee, Abe Kazemzadeh, Emily Mower, Samuel
+  Kim, Jeannette~N. Chang, Sungbok Lee, and Shrikanth~S. Narayanan.
+\newblock {IEMOCAP}: Interactive emotional dyadic motion capture database.
+\newblock In {\em Proceedings of LREC}, pages 335--340, 2008.
+
+\bibitem{chen2017multimodal}
+Minghai Chen, Sen Wang, Paul~Pu Liang, Tadas Baltru{\v{s}}aitis, Amir Zadeh,
+  and Louis-Philippe Morency.
+\newblock Multimodal sentiment analysis with word-level fusion and
+  reinforcement learning.
+\newblock In {\em Proceedings of the 19th ACM International Conference on
+  Multimodal Interaction}, pages 163--171. ACM, 2017.
+
+\bibitem{chollet2015keras}
+Fran{\c{c}}ois Chollet et~al.
+\newblock Keras.
+\newblock \url{https://github.com/fchollet/keras}, 2015.
+\newblock Version: 2.4.0.
+
+\bibitem{ghosal2019dialoguegcn}
+Deepanway Ghosal, Navonil Majumder, Soujanya Poria, Niyati Chhaya, and
+  Alexander Gelbukh.
+\newblock Dialoguegcn: A graph convolutional neural network for emotion
+  recognition in conversation.
+\newblock In {\em Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 154--164, 2019.
+
+\bibitem{he2021hierarchical}
+Xingwei He, Yijie Shen, Xiaoxuan Mao, Zhongkai Li, and Rui Cai.
+\newblock Higcn: A hierarchical graph convolutional network for dialogue
+  emotion recognition.
+\newblock In {\em Proceedings of the 2021 Conference on Empirical Methods in
+  Natural Language Processing}, pages 3470--3479. Association for Computational
+  Linguistics, 2021.
+
+\bibitem{kipf2016semi}
+Thomas~N Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock In {\em Proceedings of ICLR}, 2016.
+
+\bibitem{li2023cosmic}
+Jianlin Li, Navonil Majumder, Devamanyu Hazarika, and Soujanya Poria.
+\newblock Cosmic 2.0: Incorporating commonsense into multimodal emotion
+  recognition in conversation.
+\newblock In {\em Proceedings of the 61st Annual Meeting of the Association for
+  Computational Linguistics}, pages 1278--1291, 2023.
+
+\bibitem{li2017dailydialog}
+Yanran Li, Hui Su, Xiaoyu Shen, Wenjie Li, Ziqiang Cao, and Shuzi Niu.
+\newblock {DailyDialog}: A manually labelled multi-turn dialogue dataset.
+\newblock {\em Proceedings of IJCNLP}, 1:986--995, 2017.
+
+\bibitem{li2020graph}
+Zhongkai Li, Yijie Shen, Zixuan Wang, Xiaoxuan Mao, and Rui Cai.
+\newblock Graph-based multi-modal emotion recognition in conversation.
+\newblock In {\em Proceedings of the 28th ACM International Conference on
+  Multimedia}, pages 2282--2290, 2020.
+
+\bibitem{lin2022bieru}
+Yixuan Lin, Yixuan Wang, Jiarui Fu, Yifan Peng, Wei Zhang, and Qun Liu.
+\newblock Bieru: Bidirectional emotional recurrent unit for emotion recognition
+  in conversation.
+\newblock In {\em Findings of the Association for Computational Linguistics:
+  ACL 2022}, pages 1114--1125, 2022.
+
+\bibitem{majumder2019dialoguernn}
+Navonil Majumder, Devamanyu Hazarika, Soujanya Poria, Rada Mihalcea, and Erik
+  Cambria.
+\newblock Dialogrnn: An attentive rnn for emotion detection in conversations.
+\newblock In {\em Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~33, pages 6818--6825, 2019.
+
+\bibitem{pennington2014glove}
+Jeffrey Pennington, Richard Socher, and Christopher~D. Manning.
+\newblock Glo{V}e: Global vectors for word representation.
+\newblock In {\em Proceedings of the 2014 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 1532--1543, Doha, Qatar, 2014.
+  Association for Computational Linguistics.
+
+\bibitem{poria2017context}
+Soujanya Poria, Erik Cambria, Devamanyu Hazarika, Navonil Majumder, Amir Zadeh,
+  and Louis-Philippe Morency.
+\newblock Context-dependent sentiment analysis in user-generated videos.
+\newblock In {\em Proceedings of the 55th Annual Meeting of the Association for
+  Computational Linguistics (Volume 1: Long Papers)}, pages 873--883.
+  Association for Computational Linguistics, 2017.
+
+\bibitem{poria2019meld}
+Soujanya Poria, Devamanyu Hazarika, Navonil Majumder, Gautam Naik, Erik
+  Cambria, and Rada Mihalcea.
+\newblock Meld: A multimodal multi-party dataset for emotion recognition in
+  conversations.
+\newblock {\em Proceedings of ACL}, pages 527--536, 2019.
+
+\bibitem{poria2018meld}
+Soujanya Poria, Devamanyu Hazarika, Navonil Majumder, Amir Zadeh, Erik Cambria,
+  and Louis-Philippe Morency.
+\newblock Meld: A multimodal multi-party dataset for emotion recognition in
+  conversations.
+\newblock In {\em Proceedings of the 57th Annual Meeting of the Association for
+  Computational Linguistics}, pages 527--536, Florence, Italy, 2019.
+  Association for Computational Linguistics.
+
+\bibitem{poria2019emotion}
+Soujanya Poria, Navonil Majumder, Rada Mihalcea, and Eduard Hovy.
+\newblock Emotion recognition in conversation: Research challenges, datasets,
+  and recent advances.
+\newblock {\em IEEE Access}, 7:100943--100953, 2019.
+
+\bibitem{schlichtkrull2018modeling}
+Michael Schlichtkrull, Thomas~N Kipf, Peter Bloem, Rianne Van Den~Berg, Ivan
+  Titov, and Max Welling.
+\newblock Modeling relational data with graph convolutional networks.
+\newblock In {\em European Semantic Web Conference}, pages 593--607. Springer,
+  2018.
+
+\bibitem{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In {\em Advances in neural information processing systems}, pages
+  5998--6008, 2017.
+
+\bibitem{velickovic2017graph}
+Petar Veličković, Guillem Cucurull, Arantxa Casanova, Adriana Romero, Pietro
+  Lio, and Yoshua Bengio.
+\newblock Graph attention networks.
+\newblock {\em Proceedings of ICLR}, 2018.
+
+\bibitem{zahiri2018emotion}
+Shekhar Zahiri and Jinho~D Choi.
+\newblock Emotion detection in conversations using a hierarchical attention
+  mechanism and word embeddings.
+\newblock In {\em Proceedings of the 2018 Conference of the North American
+  Chapter of the Association for Computational Linguistics}, pages 528--533,
+  2018.
+
+\bibitem{zhao2021multi}
+Jianing Zhao, Yifan Mao, Yu~Bao, Jun Xie, and Ting Liu.
+\newblock Multi-modal transformer with multi-view visual representation for
+  emotion recognition in conversation.
+\newblock In {\em Proceedings of the 59th Annual Meeting of the Association for
+  Computational Linguistics}, pages 3417--3428, 2021.
+
+\end{thebibliography}

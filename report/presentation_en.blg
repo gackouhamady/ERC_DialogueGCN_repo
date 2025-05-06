@@ -1,0 +1,17 @@
+[0] Config.pm:307> INFO - This is Biber 2.19
+[0] Config.pm:310> INFO - Logfile is 'presentation_en.blg'
+[182] biber-MSWIN64:340> INFO - === 
+[246] Biber.pm:419> INFO - Reading 'presentation_en.bcf'
+[429] Biber.pm:979> INFO - Found 2 citekeys in bib section 0
+[456] Biber.pm:4419> INFO - Processing section 0
+[481] Biber.pm:4610> INFO - Looking for bibtex file 'refs.bib' for section 0
+[663] bibtex.pm:1713> INFO - LaTeX decoding ...
+[879] bibtex.pm:1519> INFO - Found BibTeX data source 'refs.bib'
+[1011] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1012] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1012] Biber.pm:4239> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[1012] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[1017] bbl.pm:660> INFO - Writing 'presentation_en.bbl' with encoding 'UTF-8'
+[1022] bbl.pm:763> INFO - Output to presentation_en.bbl
+[1025] Biber.pm:131> WARN - Possible typo (case mismatch) between datasource keys: 'Busso2008IEMOCAP' and 'busso2008iemocap' in file 'refs.bib'
+[1026] Biber.pm:133> INFO - WARNINGS: 1
