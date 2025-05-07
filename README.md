@@ -106,15 +106,7 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 
 #### Author: Hamady GACKOU
 #### Supervisor: Dr. Séverine AFFELT, Université Paris Cité
-## 📅 Project Year: 2025
-## 📄 See full report in /report/
 
-
-
-
-
-
-
- ## 📄 Licence
-  - [Visit](LICENSE)
+## 📄 Licence
+- [Visit](LICENSE)
 
