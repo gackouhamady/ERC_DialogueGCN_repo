@@ -105,8 +105,8 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 
 #### Author: Hamady GACKOU
 #### Supervisor: Dr. Séverine AFFELT, Université Paris Cité
-## 📅 Project Year: 2025
-## 📄 See full report in /report/
+#### 📅 Project Year: 2025
+#### 📄 See full report in /report/
 
 
 
@@ -117,7 +117,7 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 ## 📄 Licence
 [See](LICENSE)
 
-**## Repostory**
+## **Repostory**
 
-For more details and explorations of this work, visit the GitHub repository: [ERC_DialogueGCN_Hamady](https://github.com/gackouhamady/ERC_DialogueGCN_Hamady)
+- For more details and explorations of this work, visit the GitHub repository: [ERC_DialogueGCN_Hamady](https://github.com/gackouhamady/ERC_DialogueGCN_Hamady)
 
