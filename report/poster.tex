@@ -1,0 +1,160 @@
+\documentclass[final]{beamer}
+\usepackage[size=a0,scale=1.0]{beamerposter}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage{lipsum} % Pour texte de remplissage
+
+% Couleurs
+\definecolor{bleuclair}{RGB}{210,240,250}
+\definecolor{bleufonce}{RGB}{0,70,140}
+
+% Thème beamerposter
+\usetheme{Berlin}
+\usecolortheme{beaver}
+
+% Marges
+\setbeamercolor{block title}{fg=bleufonce,bg=bleuclair}
+\setbeamercolor{block body}{fg=black,bg=white}
+\setbeamerfont{block title}{size=\large,series=\bfseries}
+\setbeamerfont{block body}{size=\normalsize}
+
+% Titre
+\title{Réévaluation de DialogueGCN pour la reconnaissance des émotions en conversation}
+\author{Hamady GACKOU\\\small Encadrante : Severine AFFELT}
+\institute{Université Paris Cité -- Master AMSD\\\texttt{hamady.gackou@etu.u-paris.fr}}
+
+\setbeamertemplate{block alerted begin}{
+  \par\vskip\medskipamount%
+  \begin{beamercolorbox}[colsep*=.75ex,wd=\textwidth]{block title alerted}
+    \usebeamerfont*{block title alerted}\insertblocktitle%
+  \end{beamercolorbox}
+  {\parskip0pt\par}
+  \ifbeamercolorempty[bg]{block body alerted}{}{\ifbeamercolorempty[bg]{block body}{}{
+    \vskip-1pt
+  }}
+  \begin{beamercolorbox}[colsep*=.75ex,wd=\textwidth]{block body alerted}
+    \usebeamerfont*{block body alerted}\insertblockbody%
+  \end{beamercolorbox}
+  \par\vskip\medskipamount%
+}
+
+\begin{document}
+\begin{frame}[t]
+
+\begin{columns}[t,totalwidth=\textwidth]
+
+  % Première colonne
+  \begin{column}{0.32\textwidth}
+    \begin{block}{Introduction}
+      \textbf{Emotion Recognition in Conversation (ERC)} vise à identifier les émotions exprimées dans des dialogues multi-locuteurs. \\
+      \vspace{0.5em}
+      \textbf{Défis} : dynamiques temporelles complexes, interactions inter-locuteurs, ambiguïté linguistique. \\
+      \vspace{0.5em}
+      \textbf{Applications} : assistants empathiques, interfaces homme--machine, outils de soutien psychologique. \\
+      \vspace{1em}
+      \textbf{Objectifs du projet} :
+      \begin{itemize}
+          \item Reproduire fidèlement \textit{DialogueGCN} (Ghosal et al., EMNLP-IJCNLP 2019).
+          \item Évaluer sur les jeux de données IEMOCAP, MELD, DailyDialog.
+          \item Étudier les effets des hyperparamètres, limitations CPU vs GPU.
+      \end{itemize}
+    \end{block}
+
+    \begin{block}{Méthode}
+      \textbf{DialogueGCN} modélise les dialogues comme des graphes multi-relations :
+      \begin{itemize}
+          \item Représentation par un \textit{graph convolutional network} (RGCN) à 2 couches.
+          \item Fenêtres contextuelles \textit{(past, future)} autour de chaque énoncé.
+          \item Mécanisme \textit{active listener} pour suivre chaque locuteur.
+          \item Attention \texttt{general} appliquée au contexte.
+      \end{itemize}
+      
+      \vspace{0.5em}
+      \textbf{Reproduction fidèle} :
+      \begin{itemize}
+          \item Code source : GitHub officiel (\texttt{commit 6128ca2}).
+          \item Migration vers PyTorch 2.7.0, PyG 2.6.1.
+          \item Intégration de \texttt{DataLoader} moderne, visualisation avec TensorBoard.
+      \end{itemize}
+    \end{block}
+
+    \begin{center}
+      \includegraphics[width=0.9\linewidth]{images/logo_uni.png}
+    \end{center}
+  \end{column}
+
+  % Deuxième colonne
+  \begin{column}{0.36\textwidth}
+    \begin{block}{Résultats}
+      \textbf{IEMOCAP} (6 émotions) :
+      \begin{itemize}
+          \item Reproduction fidèle : F1 = 63.9\% vs 64.18\% (original).
+          \item Meilleure configuration : LR = 1e-3, dropout = 0.3, fenêtres = (10,10).
+          \item Gain notable avec \textit{active listener} sur les longs dialogues (+2 pts).
+      \end{itemize}
+      
+      \vspace{0.5em}
+      \textbf{MELD} (7 émotions, multi-locuteurs) :
+      \begin{itemize}
+          \item Reproduction difficile sur CPU : F1 = 48.12\% (original = 58.10\%).
+          \item Temps par époque : 240–280 s (CPU 8 Go RAM).
+      \end{itemize}
+      
+      \vspace{0.5em}
+      \textbf{DailyDialog} (7 émotions) :
+      \begin{itemize}
+          \item Pas de baseline officielle.
+          \item Reproduction stable : F1 jusqu’à 82.28\% (étape 340).
+      \end{itemize}
+    \end{block}
+
+    \begin{center}
+      \includegraphics[width=0.9\linewidth]{images/logo_uni.png}
+    \end{center}
+
+    \begin{center}
+      \includegraphics[width=0.5\linewidth]{images/DialogueGCN.jpg} \\
+      \textbf{-30\%}
+    \end{center}
+  \end{column}
+
+  % Troisième colonne
+  \begin{column}{0.32\textwidth}
+    \begin{flushright}
+      \includegraphics[width=0.3\linewidth]{images/logo_uni.png}
+    \end{flushright}
+
+    \begin{block}{Conclusion}
+      \textbf{Bilan} :
+      \begin{itemize}
+          \item Reproduction fidèle validée : écart < 1\% sur IEMOCAP.
+          \item Sensibilité marquée aux hyperparamètres (dropout, fenêtre contextuelle).
+          \item Limites CPU : surcharge mémoire sur EmoryNLP et MELD.
+      \end{itemize}
+      
+      \vspace{0.5em}
+      \textbf{Perspectives} :
+      \begin{itemize}
+          \item Optimisations mémoire : filtrage de graphes, GCN dynamiques.
+          \item Fusion multimodale : ajout de l’audio et de la vision.
+          \item Interprétabilité : application de GNNExplainer.
+      \end{itemize}
+    \end{block}
+
+    \begin{block}{Références}
+      \footnotesize
+      \begin{itemize}
+        \item Ghosal et al. (2019), \textit{DialogueGCN}, EMNLP-IJCNLP.
+        \item Majumder et al. (2019), \textit{DialogueRNN}, ACL.
+        \item Busso et al. (2008), \textit{IEMOCAP corpus}.
+        \item Poria et al. (2019), \textit{MELD dataset}.
+        \item Li et al. (2017), \textit{DailyDialog dataset}.
+      \end{itemize}
+    \end{block}
+  \end{column}
+
+\end{columns}
+\end{frame}
+\end{document}

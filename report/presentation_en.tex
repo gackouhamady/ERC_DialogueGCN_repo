@@ -1,0 +1,229 @@
+\documentclass[10pt,aspectratio=169]{beamer}
+\usetheme{default}
+\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{refs.bib}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[sfdefault]{roboto}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Colors
+\definecolor{primary}{RGB}{0,84,159}
+\definecolor{secondary}{RGB}{142,186,229}
+\setbeamercolor{palette primary}{bg=primary,fg=white}
+\setbeamercolor{palette secondary}{bg=secondary,fg=white}
+\setbeamercolor{progress bar}{fg=secondary}
+
+% Presentation info
+\title[Reevaluation of DialogueGCN]{\Large Reevaluation of DialogueGCN for Emotion Recognition in Conversation\\Faithful Reproduction, Adaptations and Practical Limitations}
+\author[Hamady GACKOU]{Hamady GACKOU\\\small Supervisor: Severine AFFELT}
+\institute{Universite Paris Cite \\ Master 1 AMSD}
+\date{\today}
+
+\begin{document}
+
+% Title
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% Outline
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+% 1. Introduction
+\section{Introduction}
+\begin{frame}{Context and Challenges}
+  \begin{itemize}
+    \item \textbf{ERC}: understanding emotional dynamics in dialogues.
+    \item Challenges: multi-speaker context, temporal evolution, linguistic ambiguity.
+    \item Applications: empathetic assistants, human--machine interfaces, mental health.
+  \end{itemize}
+  \vfill
+  \begin{block}{Objectives}
+    \begin{itemize}
+      \item Reproduce \emph{DialogueGCN} (Ghosal \emph{et al.}, EMNLP--IJCNLP 2019).
+      \item Evaluate on IEMOCAP, MELD, DailyDialog.
+      \item Explore hyperparameters and CPU vs GPU limitations.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+% 2. Related Work
+\section{Related Work}
+\begin{frame}{Sequential vs Graph-Based Approaches}
+  \begin{columns}
+    \column{0.48\textwidth}
+    \begin{block}{RNN-based}
+      \begin{itemize}
+        \item LSTM/GRU: local context, loss of long-range information.
+        \item DialogRNN: speaker-wise tracking \cite{majumder2019dialoguernn}.
+      \end{itemize}
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{Graph-based}
+      \begin{itemize}
+        \item DialogueGCN: multi-relational RGCN, modeling inter-/intra-speaker interactions \cite{ghosal2019dialoguegcn}.
+        \item Variants: MHA-GCN (multimodal), RGCN++ (enhanced attention).
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% 3. Methodology
+\section{Methodology}
+\begin{frame}{Faithful Implementation}
+  \begin{itemize}
+    \item Official GitHub code (commit \texttt{6128ca2}).
+    \item Architecture:
+      \begin{itemize}
+        \item 2-layer multi-relational RGCN.
+        \item Context windows $(p,f)$ around each utterance.
+        \item Active-listener mechanism, \texttt{general} attention.
+      \end{itemize}
+    \item Adaptations:
+      \begin{itemize}
+        \item Migration PyTorch~1.0 to 2.7.0, PyG~1.3 to 2.6.1.
+        \item Modernized DataLoader, TensorBoard logging.
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Hyperparameters and Environment}
+  \begin{columns}
+    \column{0.5\textwidth}
+    \begin{block}{Hyperparameters}
+      \small
+      \begin{tabular}{ll}
+        LR & 1e-4 (L2=1e-5) \\
+        Dropout (rec/std) & 0.1 / 0.5 \\
+        Batch size & 32 \\
+        Epochs & 60 \\
+        Windows & (10,10) \\
+        Attention & general \\
+      \end{tabular}
+    \end{block}
+    \column{0.5\textwidth}
+    \begin{block}{Environment}
+      \begin{itemize}
+        \item CPU: tests on 8\,GB RAM server.
+        \item Libraries: PyTorch~2.7.0, PyG~2.6.1, Pandas~2.2.3.
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% 4. Experimental Protocol
+\section{Experimental Protocol}
+\begin{frame}{Datasets and Preprocessing}
+  \begin{block}{Corpora}
+    \begin{itemize}
+      \item \textbf{IEMOCAP}: 151 dialogues, 11\,000 utterances, 6 classes.
+      \item \textbf{MELD}: 1\,433 dialogues, 13\,708 utterances, 7 classes, multi-speaker.
+      \item \textbf{DailyDialog}: 13\,118 dialogues, 102\,979 utterances, 7 classes.
+    \end{itemize}
+  \end{block}
+  \vspace{0.5em}
+  \begin{block}{Preprocessing}
+    Unicode cleaning, label harmonization (excited$\to$happy), WordPiece (max 250 tokens), Pickle serialization.
+  \end{block}
+\end{frame}
+
+% 5. IEMOCAP Results
+\section{IEMOCAP Results}
+\begin{frame}{Performance on IEMOCAP}
+  \begin{table}
+    \centering
+    \begin{tabular}{lcc}
+      \toprule
+      Configuration & Original (F1) & Reproduction (F1) \\
+      \midrule
+      DialogueGCN & 64.18\% & 63.9\% \\
+      + Class weights & -- & 61.54\% \\
+      Dropout 0.3 vs 0.7 & -- & 58.38\% / 54.17\% \\
+      LR 1e-4 vs 1e-3 & -- & 54.97\% / 60.43\% \\
+      Context (5,5)/(10,10)/(15,15) & -- & 56.08\% / 59.11\% / 58.19\% \\
+      \bottomrule
+    \end{tabular}
+    \caption{Comparison of configurations on IEMOCAP}
+  \end{table}
+  \vfill
+  \begin{itemize}
+    \item Best: LR=1e-3, dropout=0.3, window=(10,10).
+    \item Active listener: +2 pts F1 on long dialogues.
+  \end{itemize}
+\end{frame}
+
+% 6. MELD & DailyDialog
+\section{MELD \& DailyDialog}
+\begin{frame}{MELD vs DailyDialog}
+  \begin{columns}
+    \column{0.48\textwidth}
+    \begin{block}{MELD}
+      \begin{itemize}
+        \item Original: 58.10\% F1.
+        \item Reproduction: plateau at 48.12\% by epoch 1.
+        \item CPU training: 240--280\,s/epoch.
+      \end{itemize}
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{DailyDialog}
+      \begin{itemize}
+        \item No paper baseline.
+        \item Reproduction: 28.21\% $\to$ 82.28\% (step 340).
+        \item Rapid convergence, stable dataset.
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% 7. Additional Studies
+\section{Additional Studies}
+\begin{frame}{Ablation \& Variations}
+  \begin{itemize}
+    \item \textbf{Attention}: dot-product $>$ general $>$ concat.
+    \item \textbf{Batch size}: 16 $\to$ 57.56\%, 64 $\to$ 56.21\%.
+    \item \textbf{Class weighting}: +4 pts F1 (61.54\%).
+    \item \textbf{Context windows}: (10,10) optimal.
+  \end{itemize}
+  \vfill
+  \begin{block}{CPU Limitation}
+    Training on EmoryNLP impossible (707 nodes, 2105 edges).
+  \end{block}
+\end{frame}
+
+% 8. Conclusion & Perspectives
+\section{Conclusion and Perspectives}
+\begin{frame}{Conclusion \& Perspectives}
+  \begin{block}{Summary}
+    \begin{itemize}
+      \item Faithful reproduction validated, gaps <1\% on IEMOCAP.
+      \item Hyperparameters and extensions are beneficial.
+      \item CPU vs GPU limitations highlighted.
+    \end{itemize}
+  \end{block}
+  \vspace{0.5em}
+  \begin{block}{Future Work}
+    \begin{itemize}
+      \item Dynamic GCNs, edge filtering for memory efficiency.
+      \item Multimodal fusion (audio, visual).
+      \item Explainability (GNNExplainer) for transparency.
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{center}
+    \Large\color{primary} Thank you for your attention!
+  \end{center}
+\end{frame}
+
+% References
+\begin{frame}[allowframebreaks]{References}
+    \printbibliography[heading=none]
+\end{frame}
+
+\end{document}

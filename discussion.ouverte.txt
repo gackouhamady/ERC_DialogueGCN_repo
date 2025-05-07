@@ -1,0 +1,44 @@
+
+Approches Possibles à Discuter en Profondeur (Section 6.1) – Analyse de DialogueGCN
+
+Dans le cadre de votre projet tuteuré, plusieurs axes analytiques et expérimentaux peuvent être développés autour de DialogueGCN (D19-1015), en lien avec les guidelines de l’évaluation critique. Voici les approches systématiques à inclure et justifier dans votre article au point 6.1 :
+
+1. Évaluation de la représentation contextuelle
+   - ➤ Discuter la combinaison des encodeurs contextuels séquentiels (Bi-GRU) et de graphe (RGCN).
+   - ➤ Analyser l’intérêt du modèle hybride (sequence + graph) comparé aux approches purement RNN.
+   - ➤ Mise en évidence de la capacité du modèle à capter la dépendance inter-speaker et l’inertie émotionnelle intra-speaker.
+
+2. Étude comparative de la fenêtre contextuelle (p, f)
+   - ➤ DialogueGCN repose sur des fenêtres de contexte passé/futur (par défaut p=10, f=10).
+   - ➤ Réaliser une étude empirique (déjà amorcée dans vos résultats) pour évaluer son impact.
+   - ➤ Discuter le compromis entre performance et coût computationnel.
+
+3. Impact de la modélisation des types de relation
+   - ➤ Le graphe encode 2M² types d’arêtes (M = nombre de speakers).
+   - ➤ Étudier la pertinence de distinguer toutes ces relations versus une simplification (ex. fusionner ou ne garder que l’aspect temporel).
+   - ➤ L’ablation du papier montre que chaque type est crucial : à confirmer ou discuter avec d'autres datasets (e.g. DailyDialog).
+
+4. Attention et pondération des arêtes
+   - ➤ Analyse du module d’attention utilisé pour pondérer les arêtes du graphe (αij).
+   - ➤ Quelle est la qualité de l’attention attribuée ? Visualisations possibles.
+
+5. Étude sur la scalabilité et la mémoire
+   - ➤ DialogueGCN présente une complexité quadratique (O(N²)) sur le nombre d’utterances.
+   - ➤ Montrer les limitations CPU observées sur EmoryNLP.
+   - ➤ Proposer des pistes d’optimisation (e.g. filtrer les relations faibles, regrouper les speakers, réduction des arêtes).
+
+6. Extension vers l’information multimodale
+   - ➤ Bien que le papier se concentre sur le texte, il est conçu pour être étendu à l’audio/visuel.
+   - ➤ Discuter les implications et challenges de l’intégration multimodale.
+
+7. Détection du shift émotionnel inter-speaker
+   - ➤ Un point suggéré par les auteurs est la détection de changement émotionnel d’un speaker à l’autre.
+   - ➤ Vous pouvez discuter comment cette tâche pourrait être intégrée comme tâche secondaire (multi-task learning).
+
+8. Application potentielle à des systèmes de dialogue
+   - ➤ Les auteurs évoquent une utilisation dans des agents conversationnels affectifs.
+   - ➤ Discuter les prérequis : latence, adaptation en temps réel, traitements en ligne.
+
+Conclusion
+Toutes ces approches permettent de discuter l’architecture DialogueGCN sous plusieurs angles : efficacité contextuelle, coût mémoire, complexité relationnelle, robustesse aux données, capacité à généraliser à des contextes multi-speakers ou multimodaux. Ces discussions répondent parfaitement aux exigences du projet tuteuré (reproduction, extension, évaluation critique).
+

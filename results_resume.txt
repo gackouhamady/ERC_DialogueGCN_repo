@@ -1,0 +1,61 @@
+
+🧪 Résumé des Performances des Modèles sur IEMOCAP
+
+⚙️ Scénario 1 : Modèles de Base
+- LSTM : F-Score final = 55.18 (amélioration progressive sur 60 époques)
+- GRU : F-Score final = 57.49 (meilleure convergence)
+- DialogRNN : F-Score final = 56.49 (temps d'entraînement plus long)
+
+⚙️ Scénario 2 : Dropout
+- Dropout élevé (0.7) : F-Score = 54.17 (moins de surapprentissage mais moins performant)
+- Dropout faible (0.3) : F-Score = 58.38 (meilleure régularisation)
+
+⚙️ Scénario 3 : Poids de Classe
+- Avec pondération : F-Score = 61.54 (amélioration significative)
+
+⚙️ Scénario 4 : Taux d'Apprentissage (LR)
+- LR faible (0.0001) : F-Score = 54.97 (convergence lente)
+- LR élevé (0.001) : F-Score = 60.43 (meilleur résultat, mais instabilité possible)
+
+✅ Conclusion : Meilleur modèle = GRU ou DialogRNN avec poids de classes. Dropout + LR adaptatif = essentiels.
+
+⚙️ Scénario 5 : Listener Actif
+- F-Score final = 56.17 (bonne convergence)
+
+⚙️ Scénario 6 : Batch Size
+- Batch Size 16 : F-Score = 57.56 (meilleure)
+- Batch Size 64 : F-Score = 56.21
+
+⚙️ Scénario 7 : Mécanismes d'Attention
+- Dot Attention : F-Score = 58.24 (meilleure)
+- General : 55.91 | Concat : 55.19
+
+⚙️ Scénario 8 : Fenêtres Contextuelles
+- windowp=10, windowf=10 → F-Score = 59.11 (meilleur compromis)
+- windowp=5, windowf=5 → F-Score = 56.08 (rapide mais moins bon)
+- windowp=15, windowf=15 → F-Score = 58.19 (équilibré)
+
+⚠️ Limite d’exécution sur CPU (EmoryNLP)
+- Code fonctionnel, mais entraînement impossible sur CPU à cause de la taille des graphes (RGCN coûteux en mémoire)
+- DialogueGCN conçu pour GPU. Saturation mémoire dès les premières itérations.
+
+🧪 Résumé des résultats expérimentaux sur DialogueGCN
+
+✅ IEMOCAP Dataset
+- Configuration : --class-weight --dropout=0.3 --rec-dropout=0.05 --l2=1e-6 --lr=0.001 --batch-size=16
+- F1 atteint ~63% rapidement (ép. 7), puis chute (overfitting)
+- Pas de validation → pas de sauvegarde conditionnelle
+
+✅ DailyDialog Dataset
+- Méthode : mini-batchs + GCN
+- F1-score : 28.21% → 82.28% (step 340)
+- Très bonne convergence, dataset stable
+
+✅ MELD Dataset
+- F1-test plafonne à 48.12% dès l’époque 1, pas d’amélioration
+- Entraînement lent (≈ 240–280s/epoch) sur CPU
+- Dataset bruité ou modèle sous-entraîné
+
+⚠️ Limitations Matérielles (EmoryNLP)
+- Saturation mémoire CPU à cause des graphes trop grands (707 nœuds, 2105 arêtes)
+- Exécution GPU recommandée (RGCN + propagation graphique)

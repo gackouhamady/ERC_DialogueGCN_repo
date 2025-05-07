@@ -1,0 +1,250 @@
+% Compile with pdflatex or xelatex
+\documentclass[10pt,aspectratio=169]{beamer}
+\usetheme{default}
+
+% Bibliography
+\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{refs.bib}
+
+% Graphics, math, tables, fonts
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[sfdefault]{roboto}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Notes on presenter screen
+\usepackage{pgfpages}
+\setbeameroption{show notes on second screen=right}
+
+% Colors
+\definecolor{primary}{RGB}{0,84,159}
+\definecolor{secondary}{RGB}{142,186,229}
+\setbeamercolor{palette primary}{bg=primary,fg=white}
+\setbeamercolor{palette secondary}{bg=secondary,fg=white}
+\setbeamercolor{progress bar}{fg=secondary}
+
+% Presentation info
+\title[Reevaluation of DialogueGCN]{\Large Reevaluation of DialogueGCN for Emotion Recognition in Conversation\\Faithful Reproduction, Adaptations and Practical Limitations}
+\author[Hamady GACKOU]{Hamady GACKOU, \small Supervisor: Severine AFFELT}
+\institute{Universite Paris Cite \\ Master 1 AMSD}
+\date{May 6, 2025}
+
+\begin{document}
+
+% Slide 1: Title
+\begin{frame}[plain]
+  \titlepage
+  \note{Good morning/afternoon, everyone. My name is Hamady Gackou, a Master’s student in Data Science at Université Paris Cité. Today I will present our work on the re-evaluation of DialogueGCN, a graph convolutional neural network for emotion recognition in conversation. We focus on faithfully reproducing the original architecture, assessing its performance on three benchmark datasets—IEMOCAP, MELD, and DailyDialog—and analyzing practical constraints related to compute resources. Over the next ten minutes, I will guide you through the context and objectives, methodological details, experimental results, critical insights, and perspectives for future improvements. Let’s begin with the context and objectives of this study.}
+\end{frame}
+
+% Slide 2: Outline
+\begin{frame}{Outline}
+  \tableofcontents
+  \note{Here is the outline of today’s presentation. First, I will cover the context and challenges of emotion recognition in conversation. Next, we will review related work, contrasting sequential RNN-based methods with graph-based approaches. Then, I will describe our methodology, including the implementation details, hyperparameters, and environment settings. After that, I will present the experimental protocol covering datasets and preprocessing. We will examine our main results on IEMOCAP, followed by MELD and DailyDialog benchmarks. Then I will discuss ablation studies and variations. Finally, I will conclude with key takeaways and future research directions.}
+\end{frame}
+
+% Slide 3: Introduction
+\section{Introduction}
+\begin{frame}{Context and Challenges}
+  \begin{itemize}
+    \item \textbf{ERC}: understanding emotional dynamics in dialogues.
+    \item Challenges: multi-speaker context, temporal evolution, linguistic ambiguity.
+    \item Applications: empathetic assistants, human--machine interfaces, mental health monitoring.
+  \end{itemize}
+  \vfill
+  \begin{block}{Objectives}
+    \begin{itemize}
+      \item Reproduce \emph{DialogueGCN} (Ghosal et al., EMNLP–IJCNLP 2019).
+      \item Evaluate on IEMOCAP, MELD, DailyDialog.
+      \item Explore hyperparameters and CPU vs GPU limitations.
+    \end{itemize}
+  \end{block}
+  \note{Emotion recognition in conversation, or ERC, is essential for systems that understand human affective states. Unlike sentence-level classification, ERC must handle multi-speaker interactions, capture evolving emotional dynamics over turns, and deal with linguistic ambiguity. These capabilities power applications such as empathetic chatbots, advanced human–machine interfaces, and mental health monitoring tools. Our project has three main objectives. First, we faithfully reproduce the DialogueGCN model introduced in 2019. Second, we evaluate its performance on three benchmark datasets: IEMOCAP, MELD, and DailyDialog. Third, we perform systematic hyperparameter exploration and highlight practical constraints—particularly CPU vs GPU requirements—for deploying graph-based architectures in real-world settings.}
+\end{frame}
+
+% Slide 4: Related Work
+\section{Related Work}
+\begin{frame}{Sequential vs Graph-Based Approaches}
+  \begin{columns}
+    \column{0.48\textwidth}
+    \begin{block}{RNN-based Methods}
+      \begin{itemize}
+        \item LSTM/GRU: limited long-range context.
+        \item DialogRNN: per-speaker state tracking.
+      \end{itemize}
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{Graph-based Methods}
+      \begin{itemize}
+        \item DialogueGCN: relational GCN with inter- and intra-speaker edges.
+        \item Variants: MHA-GCN, RGCN++.
+      \end{itemize}
+    \end{block}
+  \end{columns}
+  \note{The ERC landscape divides into sequential and graph-based approaches. RNN-based methods, such as LSTM or GRU, encode dialogues as sequences of turns but struggle with long-range dependencies and speaker-specific context. DialogueRNN addresses this by maintaining separate states per speaker. DialogueGCN advances further by representing the conversation as a relational graph: each utterance is a node, and edges encode speaker interactions both within and across turns. Graph convolution aggregates context from the entire dialogue structure. Extensions like MHA-GCN and RGCN++ incorporate attention mechanisms and multimodal fusion, building on this graph-centric paradigm.}
+\end{frame}
+
+% Slide 5: Methodology - Implementation
+\section{Methodology}
+\begin{frame}{Faithful Implementation}
+  \begin{itemize}
+    \item Official GitHub code (commit \texttt{6128ca2}).
+    \item Architecture details:
+      \begin{itemize}
+        \item Two-layer multi-relational RGCN.
+        \item Context windows of past and future utterances.
+        \item Active-listener mechanism, general attention.
+      \end{itemize}
+    \item Adaptations:
+      \begin{itemize}
+        \item Migrated PyTorch 1.0 → 2.7.0, PyG 1.3 → 2.6.1.
+        \item Updated DataLoader API, added TensorBoard logging.
+      \end{itemize}
+  \end{itemize}
+  \note{We began by cloning the official repository and checked out the specific commit matching the paper. The core model uses two layers of relational graph convolution, integrating context windows around each utterance and an active-listener module with general attention. To run on modern hardware, we migrated from PyTorch 1.0 to 2.7.0 and PyG 1.3 to 2.6.1, updating API calls accordingly. We refactored the data pipeline with the latest DataLoader interface and added TensorBoard support for live monitoring of training and validation metrics.}
+\end{frame}
+
+% Slide 6: Hyperparameters & Environment
+\begin{frame}{Hyperparameters and Environment}
+  \begin{columns}
+    \column{0.5\textwidth}
+    \begin{block}{Hyperparameters}
+      \begin{tabular}{ll}
+        Learning rate & 1e-4 (L2=1e-5) \\
+        Dropout (RNN/GCN) & 0.1 / 0.5 \\
+        Batch size    & 32               \\
+        Epochs        & 60               \\
+        Context window& (10,10)          \\
+        Attention     & general          \\
+      \end{tabular}
+    \end{block}
+    \column{0.5\textwidth}
+    \begin{block}{Environment}
+      \begin{itemize}
+        \item CPU tests: 8 GB RAM server.
+        \item GPU: NVIDIA A100, 80 GB VRAM.
+        \item Libraries: PyTorch 2.7.0, PyG 2.6.1, Pandas 2.2.3.
+      \end{itemize}
+    \end{block}
+  \end{columns}
+  \note{All experiments share a fixed hyperparameter set: an initial learning rate of 1e-4 with L2 regularization, dropout rates of 0.1 in the RNN and 0.5 in the GCN, and a batch size of 32 trained for 60 epochs. Context windows include 10 past and 10 future utterances, using a general attention mechanism. We benchmark on two environments: an 8 GB CPU server to assess resource constraints, and an NVIDIA GPU. The software stack uses PyTorch 2.7.0, PyTorch Geometric 2.6.1, and Pandas 2.2.3 to ensure reproducibility.}
+\end{frame}
+
+
+% 4. Experimental Protocol
+\section{Experimental Protocol}
+\begin{frame}{Datasets and Preprocessing}
+  \begin{block}{Corpora}
+    \begin{itemize}
+      \item \textbf{IEMOCAP}: 151 dialogues, 11\,000 utterances, 6 classes.
+      \item \textbf{MELD}: 1\,433 dialogues, 13\,708 utterances, 7 classes, multi-speaker.
+      \item \textbf{DailyDialog}: 13\,118 dialogues, 102\,979 utterances, 7 classes.
+    \end{itemize}
+  \end{block}
+  \vspace{0.5em}
+  \begin{block}{Preprocessing}
+    Unicode cleaning, label harmonization (excited$\to$happy), WordPiece (max 250 tokens), Pickle serialization.
+  \end{block}
+  \note{We evaluate on three datasets. IEMOCAP contains 151 dialogues with 11,000 utterances across six emotion classes. MELD has 1,433 dialogues with 13,708 utterances and seven classes, featuring multiple speakers per dialogue. DailyDialog is the largest, with over 13,000 dialogues and 102,979 utterances across seven classes. Preprocessing includes Unicode cleaning to remove special characters, label harmonization to unify similar labels like excited and happy, tokenization using WordPiece with a maximum of 250 tokens per utterance, and serialization into Pickle format for efficient loading.}
+\end{frame}
+
+% 5. IEMOCAP Results
+\section{IEMOCAP Results}
+\begin{frame}{Performance on IEMOCAP}
+  \begin{table}
+    \centering
+    \begin{tabular}{lcc}
+      \toprule
+      Configuration & Original (F1) & Reproduction (F1) \\
+      \midrule
+      DialogueGCN & 64.18\% & 63.9\% \\
+      + Class weights & -- & 61.54\% \\
+      Dropout 0.3 vs 0.7 & -- & 58.38\% / 54.17\% \\
+      LR 1e-4 vs 1e-3 & -- & 54.97\% / 60.43\% \\
+      Context (5,5)/(10,10)/(15,15) & -- & 56.08\% / 59.11\% / 58.19\% \\
+      \bottomrule
+    \end{tabular}
+    \caption{Comparison of configurations on IEMOCAP}
+  \end{table}
+  \vfill
+  \begin{itemize}
+    \item Best: LR=1e-3, dropout=0.3, window=(10,10).
+    \item Active listener: +2 pts F1 on long dialogues.
+  \end{itemize}
+  \note{On IEMOCAP, the original DialogueGCN achieved 64.18\% F1 score, while our reproduction reached 63.9\%. We explored various configurations: adding class weights improved F1 to 61.54\%, while dropout rates of 0.3 and 0.7 led to lower scores of 58.38\% and 54.17\%, respectively. Adjusting the learning rate from 1e-4 to 1e-3 resulted in a drop to 54.97\% but improved to 60.43\% with the latter. Context window sizes of (5,5), (10,10), and (15,15) yielded F1 scores of 56.08\%, 59.11\%, and 58.19\%, respectively, with the best configuration being LR=1e-3, dropout=0.3, and context window of (10,10). The active listener mechanism provided a +2 points F1 boost on longer dialogues, demonstrating its effectiveness in capturing emotional dynamics over time.}
+\end{frame}
+
+% 6. MELD & DailyDialog
+\section{MELD \& DailyDialog}
+\begin{frame}{MELD vs DailyDialog}
+  \begin{columns}
+    \column{0.48\textwidth}
+    \begin{block}{MELD}
+      \begin{itemize}
+        \item Original: 58.10\% F1.
+        \item Reproduction: plateau at 48.12\% by epoch 1.
+        \item CPU training: 240--280\,s/epoch.
+      \end{itemize}
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{DailyDialog}
+      \begin{itemize}
+        \item No paper baseline.
+        \item Reproduction: 28.21\% $\to$ 82.28\% (step 340).
+        \item Rapid convergence, stable dataset.
+      \end{itemize}
+    \end{block}
+  \end{columns}
+  \note{On the MELD dataset, the original DialogueGCN achieved an F1 score of 58.10\%, but our reproduction plateaued at 48.12\% after just one epoch, indicating a significant drop in performance. Training on CPU took 240 to 280 seconds per epoch, highlighting the computational burden. In contrast, DailyDialog had no baseline in the original paper, but our reproduction started at 28.21\% and improved to 82.28\% by step 340, demonstrating rapid convergence and stability in the dataset. This suggests that while IEMOCAP and MELD are challenging, DailyDialog is more amenable to graph-based approaches.}
+\end{frame}
+
+% 7. Additional Studies
+\section{Additional Studies}
+\begin{frame}{Ablation \& Variations}
+  \begin{itemize}
+    \item \textbf{Attention}: dot-product $>$ general $>$ concat.
+    \item \textbf{Batch size}: 16 $\to$ 57.56\%, 64 $\to$ 56.21\%.
+    \item \textbf{Class weighting}: +4 pts F1 (61.54\%).
+    \item \textbf{Context windows}: (10,10) optimal.
+  \end{itemize}
+  \vfill
+  \begin{block}{CPU Limitation}
+    Training on EmoryNLP impossible (707 nodes, 2105 edges).
+  \end{block}
+  \note{We conducted additional studies to explore the impact of various configurations. We found that the attention mechanism performed best with dot-product attention, followed by general and concatenation methods. Adjusting the batch size from 16 to 64 yielded F1 scores of 57.56\% and 56.21\%, respectively. Class weighting improved F1 by +4 points, reaching 61.54\%. The context window of (10,10) was optimal for performance. However, we encountered a significant limitation when attempting to train on the EmoryNLP dataset, which has 707 nodes and 2105 edges; the CPU resources were insufficient for this task.}
+\end{frame}
+
+% 8. Conclusion & Perspectives
+\section{Conclusion and Perspectives}
+\begin{frame}{Conclusion \& Perspectives}
+  \begin{block}{Summary}
+    \begin{itemize}
+      \item Faithful reproduction validated, gaps <1\% on IEMOCAP.
+      \item Hyperparameters and extensions are beneficial.
+      \item CPU vs GPU limitations highlighted.
+    \end{itemize}
+  \end{block}
+  \vspace{0.5em}
+  \begin{block}{Future Work}
+    \begin{itemize}
+      \item Dynamic GCNs, edge filtering for memory efficiency.
+      \item Multimodal fusion (audio, visual).
+      \item Explainability (GNNExplainer) for transparency.
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{center}
+    \Large\color{primary} Thank you for your attention!
+  \end{center}
+  \note{In conclusion, our faithful reproduction of DialogueGCN validated the original architecture, with performance gaps of less than 1\% on IEMOCAP. We found that hyperparameter tuning and architectural extensions significantly improved results. However, we also highlighted practical limitations related to CPU versus GPU training, particularly for larger datasets. For future work, we plan to explore dynamic GCNs and edge filtering techniques to enhance memory efficiency. Additionally, we aim to incorporate multimodal fusion by integrating audio and visual data, and we will investigate explainability methods like GNNExplainer to improve model transparency and interpretability. Thank you for your attention!}
+\end{frame}
+
+
+
+
+% Continue with the rest of the slides...
+\end{document}
