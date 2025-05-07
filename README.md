@@ -117,6 +117,7 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 ## 📄 Licence
 [See](LICENSE)
 
+**## Repostory**
 
 For more details and explorations of this work, visit the GitHub repository: [ERC_DialogueGCN_Hamady](https://github.com/gackouhamady/ERC_DialogueGCN_Hamady)
 
