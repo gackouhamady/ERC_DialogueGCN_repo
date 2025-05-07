@@ -115,6 +115,6 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 
 
 
-- ## 📄 Licence
-- [Visit](LICENSE)
+ ## 📄 Licence
+  - [Visit](LICENSE)
 
