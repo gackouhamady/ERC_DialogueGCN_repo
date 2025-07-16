@@ -5,11 +5,26 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 
-## 📘 Project Overview
+- [Re-evaluating DialogueGCN for Emotion Recognition in Conversation](#re-evaluating-dialoguegcn-for-emotion-recognition-in-conversation)
+- [Project Overview](#-project-overview)
+- [Objectives](#-objectives)
+- [Why DialogueGCN?](#-why-dialoguegcn)
+- [Key Results](#-key-results)
+- [Technologies](#️-technologies)
+- [Project Structure](#-project-structure)
+- [Reproducibility](#-reproducibility)
+- [Highlights](#-highlights)
+- [Future Directions](#-future-directions)
+- [Key References](#-key-references)
+- [Author & Supervision](#author-hamady-gackou)
+- [Licence](#-licence)
+- [Repository](#repository)
+
+## Project Overview
 
 This project conducts a **critical reproduction and evaluation** of the DialogueGCN model — a graph-based neural network designed for **Emotion Recognition in Conversations (ERC)**. Our work involves faithful reimplementation, empirical validation on benchmark datasets, and exploration of its practical and architectural limitations.
 
-## 🎯 Objectives
+## Objectives
 
 - Reproduce the original DialogueGCN architecture and training setup.
 - Evaluate its performance on **IEMOCAP**, **MELD**, and **DailyDialog** datasets.
@@ -17,11 +32,11 @@ This project conducts a **critical reproduction and evaluation** of the Dialogue
 - Test the model's **scalability** and **hardware sensitivity**, especially on **EmoryNLP** (CPU vs GPU).
 - Provide clear insights into **graph-based architectures** for conversational emotion analysis.
 
-## 🧠 Why DialogueGCN?
+## Why DialogueGCN?
 
 DialogueGCN (Ghosal et al., EMNLP-IJCNLP 2019) models dialogues as relational graphs to capture both **temporal** and **inter-speaker dependencies**, using Relational GCN layers. Its design allows for fine-grained modeling of interpersonal emotional dynamics, surpassing sequential baselines (LSTM, GRU, DialogueRNN) in accuracy and expressivity.
 
-## 🔬 Key Results
+## Key Results
 
 ```bash
 
@@ -32,7 +47,7 @@ DialogueGCN (Ghosal et al., EMNLP-IJCNLP 2019) models dialogues as relational gr
 | MELD         | 58.10%              | 48.12%                 | Convergence issues, unbalanced label problem   |
 | EmoryNLP     | --                  | --                     | Failed training on CPU (memory bottleneck)     |
 ```
-## ⚙️ Technologies
+##  Technologies
 
 - Python 3.10
 - PyTorch 2.7.0
@@ -40,7 +55,7 @@ DialogueGCN (Ghosal et al., EMNLP-IJCNLP 2019) models dialogues as relational gr
 - GloVe embeddings (300d)
 - TensorBoard, Pandas, scikit-learn
 
-## 📂 Project Structure
+##  Project Structure
 ```bash
 ERC_DIALOGUEGCN_HAMADY/
 ├── .vscode/                      # Configurations VSCode
@@ -72,11 +87,11 @@ ERC_DIALOGUEGCN_HAMADY/
 
 ```
 
-## 🧪 Reproducibility
+##  Reproducibility
 
 All hyperparameters, Scripts, and model checkpoints are provided. To replicate the main results
 
-## 🔍 Highlights
+##  Highlights
 - Graph-based architectures significantly outperform sequential models in structured ERC.
 
 - Training fails on CPU for EmoryNLP due to O(N²) memory cost of relational GCN.
@@ -85,7 +100,7 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 
 - Class weighting crucial for imbalanced datasets like MELD.
 
-📈 Future Directions
+## Future Directions
 - Integrate multimodal features (audio, video) for richer emotion cues.
 
 - Explore graph sparsification for efficient CPU training.
@@ -94,7 +109,7 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 
 - Investigate transfer learning to social media or low-resource domains.
 
-## 📚 Key References 
+## Key References 
 - Ghosal et al., DialogueGCN: A Graph Convolutional Neural Network for Emotion Recognition in Conversation, EMNLP-IJCNLP 2019.
 
 - Majumder et al., DialogueRNN, AAAI 2019.
@@ -102,19 +117,12 @@ All hyperparameters, Scripts, and model checkpoints are provided. To replicate t
 - Poria et al., MELD Dataset, ACL 2019.
 
 - Schlichtkrull et al., Relational GCN, ESWC 2018.
+## Authors : 
+- Author: Hamady GACKOU
+- Supervisor: Dr. Séverine AFFELT, Université Paris Cité
+- Project Year: 2025
 
-#### Author: Hamady GACKOU
-#### Supervisor: Dr. Séverine AFFELT, Université Paris Cité
-#### 📅 Project Year: 2025
-#### 📄 See full report in /report/
-
-
-
-
-
-
-
-## 📄 Licence
+## Licence
 [See](LICENSE)
 
 ## **Repository**
